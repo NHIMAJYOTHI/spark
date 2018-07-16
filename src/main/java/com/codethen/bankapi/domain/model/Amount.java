@@ -2,15 +2,17 @@ package com.codethen.bankapi.domain.model;
 
 import com.codethen.bankapi.domain.errors.NotEnoughUnitsException;
 
+import java.util.Objects;
+
 public class Amount {
 
     private final Currency currency;
     private long units;
 
 
-    public Amount(Currency currency) {
+    public Amount(Currency currency, long units) {
         this.currency = currency;
-        this.units = 0;
+        this.units = units;
     }
 
 
@@ -32,5 +34,21 @@ public class Amount {
             throw new NotEnoughUnitsException();
         }
         this.units -= units;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Amount amount = (Amount) o;
+        return units == amount.units &&
+            currency == amount.currency;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(currency, units);
     }
 }

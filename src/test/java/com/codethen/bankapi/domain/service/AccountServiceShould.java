@@ -1,11 +1,12 @@
 package com.codethen.bankapi.domain.service;
 
 import com.codethen.bankapi.domain.errors.AccountNotExistsException;
+import com.codethen.bankapi.domain.errors.CurrenciesDontMatchException;
+import com.codethen.bankapi.domain.errors.NotEnoughUnitsException;
 import com.codethen.bankapi.domain.model.Account;
 import com.codethen.bankapi.domain.model.Amount;
 import com.codethen.bankapi.domain.model.Currency;
 import com.codethen.bankapi.domain.repository.AccountRepository;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,24 +29,92 @@ public class AccountServiceShould {
     public void return_existing_account() {
 
         final String username = "some-user";
-        final Account existingAccount = new Account(username, Currency.EURO_CENTS);
-        existingAccount.getAmount().addUnits(100);
 
         Mockito.when(accountRepositoryMock.findByUsername(Mockito.anyString()))
-            .thenReturn(existingAccount);
+            .thenReturn(new Account(username, new Amount(Currency.EURO_CENTS, 100)));
 
-        final Account accountFound = accountService.findByUsername(username);
-        Assert.assertThat(accountFound.getUsername(), is(username));
-        Assert.assertThat(accountFound.getAmount().getCurrency(), is(Currency.EURO_CENTS));
-        Assert.assertThat(accountFound.getAmount().getUnits(), is(100L));
+        Assert.assertThat(accountService.findByUsername(username),
+            is(new Account(username, new Amount(Currency.EURO_CENTS, 100))));
     }
 
-    @Test
-    public void return_null_when_getting_non_existing_account() {
+    @Test(expected = AccountNotExistsException.class)
+    public void fail_when_getting_non_existing_account() {
 
         Mockito.when(accountRepositoryMock.findByUsername(Mockito.anyString()))
             .thenReturn(null);
 
-        Assert.assertNull(accountService.findByUsername("some-user"));
+        accountService.findByUsername("some-user");
+    }
+
+    @Test(expected = AccountNotExistsException.class)
+    public void fail_if_transferring_between_non_existing_accounts() {
+
+        Mockito.when(accountRepositoryMock.findByUsername(Mockito.anyString()))
+            .thenReturn(null);
+
+        accountService.transferMoney("from", "to", 100);
+    }
+
+    @Test(expected = AccountNotExistsException.class)
+    public void fail_if_transferring_from_non_existing_account() {
+
+        Mockito.when(accountRepositoryMock.findByUsername("from"))
+            .thenReturn(null);
+
+        Mockito.when(accountRepositoryMock.findByUsername("to"))
+            .thenReturn(new Account("to", new Amount(Currency.EURO_CENTS, 100)));
+
+        accountService.transferMoney("from", "to", 100);
+    }
+
+    @Test(expected = AccountNotExistsException.class)
+    public void fail_if_transferring_to_non_existing_account() {
+
+        Mockito.when(accountRepositoryMock.findByUsername("from"))
+            .thenReturn(new Account("from", new Amount(Currency.EURO_CENTS, 100)));
+
+        Mockito.when(accountRepositoryMock.findByUsername("to"))
+            .thenReturn(null);
+
+        accountService.transferMoney("from", "to", 100);
+    }
+
+    @Test(expected = NotEnoughUnitsException.class)
+    public void fail_if_transferring_from_account_without_enough_funds() {
+
+        Mockito.when(accountRepositoryMock.findByUsername("from"))
+            .thenReturn(new Account("from", new Amount(Currency.EURO_CENTS, 100)));
+
+        Mockito.when(accountRepositoryMock.findByUsername("to"))
+            .thenReturn(new Account("to", new Amount(Currency.EURO_CENTS, 100)));
+
+        accountService.transferMoney("from", "to", 150);
+    }
+
+    @Test(expected = CurrenciesDontMatchException.class)
+    public void fail_if_transferring_between_different_currenceis() {
+
+        Mockito.when(accountRepositoryMock.findByUsername("from"))
+            .thenReturn(new Account("from", new Amount(Currency.EURO_CENTS, 100)));
+
+        Mockito.when(accountRepositoryMock.findByUsername("to"))
+            .thenReturn(new Account("to", new Amount(Currency.DOLLAR_CENTS, 100)));
+
+        accountService.transferMoney("from", "to", 100);
+    }
+
+    @Test
+    public void transfer_money_between_accounts() {
+
+        Mockito.when(accountRepositoryMock.findByUsername("from"))
+            .thenReturn(new Account("from", new Amount(Currency.EURO_CENTS, 100)));
+
+        Mockito.when(accountRepositoryMock.findByUsername("to"))
+            .thenReturn(new Account("to", new Amount(Currency.EURO_CENTS, 100)));
+
+        accountService.transferMoney("from", "to", 25);
+
+        Mockito.verify(accountRepositoryMock).updateAccountAmount("from", new Amount(Currency.EURO_CENTS, 75));
+        Mockito.verify(accountRepositoryMock).updateAccountAmount("to", new Amount(Currency.EURO_CENTS, 125));
     }
 }
