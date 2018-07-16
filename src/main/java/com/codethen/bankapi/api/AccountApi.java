@@ -24,7 +24,6 @@ public class AccountApi {
                 final String username = req.queryParams("username");
                 final Account account = accountService.findByUsername(username);
 
-                res.type(ContentType.APPLICATION_JSON);
                 return mapper.writeValueAsString(AccountDTO.from(account));
 
             } catch (AccountNotExistsException e) {
