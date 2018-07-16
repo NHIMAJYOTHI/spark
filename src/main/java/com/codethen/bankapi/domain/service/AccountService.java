@@ -1,5 +1,6 @@
 package com.codethen.bankapi.domain.service;
 
+import com.codethen.bankapi.domain.errors.AccountAlreadyExistsException;
 import com.codethen.bankapi.domain.errors.AccountNotExistsException;
 import com.codethen.bankapi.domain.errors.CurrenciesDontMatchException;
 import com.codethen.bankapi.domain.errors.NotEnoughUnitsException;
@@ -13,6 +14,15 @@ public class AccountService {
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+    }
+
+
+    /**
+     * Creates a new account.
+     * @throws AccountAlreadyExistsException if an account already exists with same username.
+     */
+    public void create(Account account) {
+        accountRepository.create(account);
     }
 
     /**
