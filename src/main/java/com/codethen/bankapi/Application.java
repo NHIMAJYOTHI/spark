@@ -2,6 +2,10 @@ package com.codethen.bankapi;
 
 import com.codethen.bankapi.api.AccountApi;
 import com.codethen.bankapi.api.util.ContentType;
+import com.codethen.bankapi.domain.errors.AccountAlreadyExistsException;
+import com.codethen.bankapi.domain.errors.AccountNotExistsException;
+import com.codethen.bankapi.domain.errors.CurrenciesDontMatchException;
+import com.codethen.bankapi.domain.errors.NotEnoughUnitsException;
 import com.codethen.bankapi.domain.model.Account;
 import com.codethen.bankapi.domain.model.Amount;
 import com.codethen.bankapi.domain.model.Currency;
@@ -10,7 +14,7 @@ import com.codethen.bankapi.domain.service.AccountService;
 import com.codethen.bankapi.repository.InMemoryAccountRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import spark.Filter;
+import org.eclipse.jetty.http.HttpStatus;
 
 import static spark.Spark.*;
 
@@ -29,12 +33,43 @@ public class Application {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        after((Filter) (req, res) -> {
-            res.type(ContentType.APPLICATION_JSON);
+        setupResponsesContentType();
+        addExceptionHandlers();
+        setupEndpoints(mapper, accountService);
+    }
+
+    private static void addExceptionHandlers() {
+
+        exception(AccountNotExistsException.class, (ex, req, res) -> {
+            res.status(HttpStatus.NOT_FOUND_404);
+            res.body("Account not found");
         });
 
+        exception(AccountAlreadyExistsException.class, (ex, req, res) -> {
+            res.status(HttpStatus.PRECONDITION_FAILED_412);
+            res.body("Account already exists");
+        });
+
+        exception(CurrenciesDontMatchException.class, (ex, req, res) -> {
+            res.status(HttpStatus.PRECONDITION_FAILED_412);
+            res.body("Currencies don't match");
+        });
+
+        exception(NotEnoughUnitsException.class, (ex, req, res) -> {
+            res.status(HttpStatus.PRECONDITION_FAILED_412);
+            res.body("Not enough funds");
+        });
+    }
+
+    private static void setupResponsesContentType() {
+        after("/api/*", (req, res) -> {
+            res.type(ContentType.APPLICATION_JSON);
+        });
+    }
+
+    private static void setupEndpoints(ObjectMapper mapper, AccountService accountService) {
         path("/api/v1", () -> {
-            AccountApi.init(mapper, accountService);
+            AccountApi.setupEndpoints(mapper, accountService);
         });
     }
 }

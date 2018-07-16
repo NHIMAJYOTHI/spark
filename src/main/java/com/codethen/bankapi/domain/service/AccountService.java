@@ -44,7 +44,7 @@ public class AccountService {
      * @throws NotEnoughUnitsException if the source account doesn't have enough funds
      * @throws CurrenciesDontMatchException if accounts don't have the same {@link Currency}
      */
-    public void transferMoney(String fromUser, String toUser, int units) {
+    public void transferMoney(String fromUser, String toUser, long units) {
 
         final Account accountFrom = findByUsername(fromUser);
         final Account accountTo = findByUsername(toUser);
