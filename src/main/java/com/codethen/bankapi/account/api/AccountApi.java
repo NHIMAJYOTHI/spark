@@ -1,7 +1,7 @@
 package com.codethen.bankapi.account.api;
 
 import com.codethen.bankapi.account.api.dto.AccountDTO;
-import com.codethen.bankapi.account.api.dto.MessageDTO;
+import com.codethen.bankapi.common.api.dto.MessageDTO;
 import com.codethen.bankapi.account.api.dto.TransferDTO;
 import com.codethen.bankapi.account.domain.model.Account;
 import com.codethen.bankapi.account.domain.service.AccountService;

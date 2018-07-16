@@ -1,4 +1,4 @@
-package com.codethen.bankapi.account.api.dto;
+package com.codethen.bankapi.common.api.dto;
 
 public class MessageDTO {
 
