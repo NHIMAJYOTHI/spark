@@ -1,9 +1,9 @@
-package com.codethen.bankapi.domain.repository;
+package com.codethen.bankapi.account.domain.repository;
 
-import com.codethen.bankapi.domain.errors.AccountAlreadyExistsException;
-import com.codethen.bankapi.domain.errors.AccountNotExistsException;
-import com.codethen.bankapi.domain.model.Account;
-import com.codethen.bankapi.domain.model.Amount;
+import com.codethen.bankapi.account.domain.errors.AccountAlreadyExistsException;
+import com.codethen.bankapi.account.domain.errors.AccountNotExistsException;
+import com.codethen.bankapi.account.domain.model.Account;
+import com.codethen.bankapi.account.domain.model.Amount;
 
 public interface AccountRepository {
 

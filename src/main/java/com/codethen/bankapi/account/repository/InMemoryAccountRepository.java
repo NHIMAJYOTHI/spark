@@ -1,10 +1,10 @@
-package com.codethen.bankapi.repository;
+package com.codethen.bankapi.account.repository;
 
-import com.codethen.bankapi.domain.errors.AccountAlreadyExistsException;
-import com.codethen.bankapi.domain.errors.AccountNotExistsException;
-import com.codethen.bankapi.domain.model.Account;
-import com.codethen.bankapi.domain.model.Amount;
-import com.codethen.bankapi.domain.repository.AccountRepository;
+import com.codethen.bankapi.account.domain.errors.AccountAlreadyExistsException;
+import com.codethen.bankapi.account.domain.errors.AccountNotExistsException;
+import com.codethen.bankapi.account.domain.model.Account;
+import com.codethen.bankapi.account.domain.model.Amount;
+import com.codethen.bankapi.account.domain.repository.AccountRepository;
 
 import java.util.HashMap;
 import java.util.Map;

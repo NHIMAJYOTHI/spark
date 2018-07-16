@@ -1,8 +1,8 @@
-package com.codethen.bankapi.api.dto;
+package com.codethen.bankapi.account.api.dto;
 
-import com.codethen.bankapi.domain.model.Account;
-import com.codethen.bankapi.domain.model.Amount;
-import com.codethen.bankapi.domain.model.Currency;
+import com.codethen.bankapi.account.domain.model.Account;
+import com.codethen.bankapi.account.domain.model.Amount;
+import com.codethen.bankapi.account.domain.model.Currency;
 
 public class AccountDTO {
 

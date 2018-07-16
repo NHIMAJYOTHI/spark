@@ -1,4 +1,4 @@
-package com.codethen.bankapi.api.dto;
+package com.codethen.bankapi.account.api.dto;
 
 public class TransferDTO {
 

@@ -1,4 +1,4 @@
-package com.codethen.bankapi.domain.model;
+package com.codethen.bankapi.account.domain.model;
 
 public enum Currency {
 

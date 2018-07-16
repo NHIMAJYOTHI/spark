@@ -1,12 +1,12 @@
-package com.codethen.bankapi.domain.service;
+package com.codethen.bankapi.account.domain.service;
 
-import com.codethen.bankapi.domain.errors.AccountNotExistsException;
-import com.codethen.bankapi.domain.errors.CurrenciesDontMatchException;
-import com.codethen.bankapi.domain.errors.NotEnoughUnitsException;
-import com.codethen.bankapi.domain.model.Account;
-import com.codethen.bankapi.domain.model.Amount;
-import com.codethen.bankapi.domain.model.Currency;
-import com.codethen.bankapi.domain.repository.AccountRepository;
+import com.codethen.bankapi.account.domain.errors.AccountNotExistsException;
+import com.codethen.bankapi.account.domain.errors.CurrenciesDontMatchException;
+import com.codethen.bankapi.account.domain.errors.NotEnoughUnitsException;
+import com.codethen.bankapi.account.domain.model.Account;
+import com.codethen.bankapi.account.domain.model.Amount;
+import com.codethen.bankapi.account.domain.model.Currency;
+import com.codethen.bankapi.account.domain.repository.AccountRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

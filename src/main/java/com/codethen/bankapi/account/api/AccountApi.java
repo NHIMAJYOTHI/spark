@@ -1,10 +1,10 @@
-package com.codethen.bankapi.api;
+package com.codethen.bankapi.account.api;
 
-import com.codethen.bankapi.api.dto.AccountDTO;
-import com.codethen.bankapi.api.dto.MessageDTO;
-import com.codethen.bankapi.api.dto.TransferDTO;
-import com.codethen.bankapi.domain.model.Account;
-import com.codethen.bankapi.domain.service.AccountService;
+import com.codethen.bankapi.account.api.dto.AccountDTO;
+import com.codethen.bankapi.account.api.dto.MessageDTO;
+import com.codethen.bankapi.account.api.dto.TransferDTO;
+import com.codethen.bankapi.account.domain.model.Account;
+import com.codethen.bankapi.account.domain.service.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static spark.Spark.get;

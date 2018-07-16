@@ -1,6 +1,6 @@
-package com.codethen.bankapi.domain.model;
+package com.codethen.bankapi.account.domain.model;
 
-import com.codethen.bankapi.domain.errors.NotEnoughUnitsException;
+import com.codethen.bankapi.account.domain.errors.NotEnoughUnitsException;
 
 import java.util.Objects;
 
