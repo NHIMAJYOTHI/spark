@@ -2,7 +2,8 @@
 
 Sample application of a simple bank account API.
 
-## Usage
+
+## Run the application
 
 ### From IDE
 
@@ -17,8 +18,11 @@ $ docker build -t bankapi .
 $ docker run -d -p 4567:4567 --name bankapi1 bankapi
 $ docker stop bankapi1  
 ```
+
    
-There are 4 sample users/accounts already created when you launch the app (see the `Application` class).
+## Play with the sample data   
+   
+There are 4 sample users/accounts already created when you launch the app (see the [Application.java:109](https://github.com/fmaylinch/bankapi/blob/master/src/main/java/com/codethen/bankapi/Application.java#L109)).
 
 First you need to login with some user to get a JWT token:
 
@@ -38,7 +42,7 @@ curl -X GET \
 '
 ```
 
-And to transfer money to other account (with same currency):
+And to transfer money to other account:
 
 ```
 curl -X POST \
@@ -48,20 +52,22 @@ curl -X POST \
   -d '{"toUser":"mary","units":500}'
 ```
 
-## Decisions taken
+Note that transfers only work if both accounts have the same currency.
+
+## Decisions taken in this application
 
 ### Domain
 
-- Only one account per username, but the model would easily support multiple accounts.
-- Currencies are handled in cents as integers, to avoid rounding and precision issues.
-- For now it's not possible to transfer between different currencies, but it could be supported given some conversion service.  
+- Only one account per username, although the model would easily support multiple accounts per user.
+- Currencies are handled in cents as integers (we call them `units`), to avoid rounding and precision issues.
+- It's not possible to transfer between different currencies, but it could be supported given some conversion service.  
 
 ### Architecture
 
-- API is built using [Spark](http://sparkjava.com/) because it's a simple and flexible framework.
+- API is built with [Spark](http://sparkjava.com/).
 - The domain is isolated from the architecture (frameworks, API, databases, etc).
 
 ### Security
 
-- Passwords are stored using BCrypt
-- API is secured using JWT
+- Passwords are stored with BCrypt, using [jBCrypt](https://github.com/jeremyh/jBCrypt).
+- API is secured with [JWT](https://jwt.io/), using the [JJWT](https://github.com/jwtk/jjwt) library.
