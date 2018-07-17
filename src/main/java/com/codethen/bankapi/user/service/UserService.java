@@ -1,5 +1,6 @@
 package com.codethen.bankapi.user.service;
 
+import com.codethen.bankapi.common.security.SecurityUtil;
 import com.codethen.bankapi.user.domain.errors.UserAlreadyExistsException;
 import com.codethen.bankapi.user.domain.errors.UserNotExistsException;
 import com.codethen.bankapi.user.domain.model.User;
@@ -15,10 +16,11 @@ public class UserService {
 
 
     /**
-     * Creates a new user.
+     * Creates a new user. Password will be hashed.
      * @throws UserAlreadyExistsException if an account already exists with same username.
      */
     public void create(User user) {
+        hashPassword(user);
         userRepository.create(user);
     }
 
@@ -32,5 +34,9 @@ public class UserService {
             throw new UserNotExistsException();
         }
         return user;
+    }
+
+    private void hashPassword(User user) {
+        user.setPassword(SecurityUtil.hashPassword(user.getPassword()));
     }
 }

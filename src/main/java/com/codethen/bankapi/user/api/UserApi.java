@@ -1,6 +1,7 @@
 package com.codethen.bankapi.user.api;
 
 import com.codethen.bankapi.common.api.dto.MessageDTO;
+import com.codethen.bankapi.common.security.SecurityUtil;
 import com.codethen.bankapi.user.domain.model.User;
 import com.codethen.bankapi.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ public class UserApi {
 
             final User user  = userService.findByUsername(loginDTO.username);
 
-            if (user == null || !isPasswordCorrect(user.getPassword(), loginDTO.password)) {
+            if (user == null || !SecurityUtil.checkPassword(loginDTO.password, user.getPassword())) {
                 return halt(HttpStatus.UNAUTHORIZED_401);
             }
 
