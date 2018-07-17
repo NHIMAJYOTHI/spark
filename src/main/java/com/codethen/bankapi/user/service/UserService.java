@@ -1,6 +1,6 @@
 package com.codethen.bankapi.user.service;
 
-import com.codethen.bankapi.common.security.SecurityUtil;
+import com.codethen.bankapi.common.security.PasswordUtil;
 import com.codethen.bankapi.user.domain.errors.UserAlreadyExistsException;
 import com.codethen.bankapi.user.domain.errors.UserNotExistsException;
 import com.codethen.bankapi.user.domain.model.User;
@@ -37,6 +37,6 @@ public class UserService {
     }
 
     private void hashPassword(User user) {
-        user.setPassword(SecurityUtil.hashPassword(user.getPassword()));
+        user.setPassword(PasswordUtil.hash(user.getPassword()));
     }
 }

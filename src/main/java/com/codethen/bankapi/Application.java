@@ -11,6 +11,7 @@ import com.codethen.bankapi.account.domain.model.Currency;
 import com.codethen.bankapi.account.domain.service.AccountService;
 import com.codethen.bankapi.account.repository.InMemoryAccountRepository;
 import com.codethen.bankapi.common.api.content.ContentType;
+import com.codethen.bankapi.common.api.errors.AuthenticationException;
 import com.codethen.bankapi.user.api.UserApi;
 import com.codethen.bankapi.user.domain.errors.UserAlreadyExistsException;
 import com.codethen.bankapi.user.domain.errors.UserNotExistsException;
@@ -89,6 +90,10 @@ public class Application {
 
         exception(NotEnoughUnitsException.class, (ex, req, res) -> {
             setupResponse(res, HttpStatus.PRECONDITION_FAILED_412, "Not enough funds");
+        });
+
+        exception(AuthenticationException.class, (ex, req, res) -> {
+            setupResponse(res, HttpStatus.UNAUTHORIZED_401, "Unauthorized");
         });
     }
 

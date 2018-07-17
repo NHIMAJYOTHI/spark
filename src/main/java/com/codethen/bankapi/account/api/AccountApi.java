@@ -1,10 +1,12 @@
 package com.codethen.bankapi.account.api;
 
 import com.codethen.bankapi.account.api.dto.AccountDTO;
-import com.codethen.bankapi.common.api.dto.MessageDTO;
 import com.codethen.bankapi.account.api.dto.TransferDTO;
 import com.codethen.bankapi.account.domain.model.Account;
 import com.codethen.bankapi.account.domain.service.AccountService;
+import com.codethen.bankapi.common.api.dto.MessageDTO;
+import com.codethen.bankapi.common.api.security.AuthUser;
+import com.codethen.bankapi.common.api.security.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static spark.Spark.get;
@@ -18,22 +20,17 @@ public class AccountApi {
 
         get("/balance", (req, res) -> {
 
-            // TODO: get user from req auth
-            final String username = req.queryParams("user");
-
-            final Account account = accountService.findByUsername(username);
+            final AuthUser authUser = JwtUtil.getAuthUser(req);
+            final Account account = accountService.findByUsername(authUser.username);
 
             return mapper.writeValueAsString(AccountDTO.from(account));
         });
 
         post("/transfer", (req, res) -> {
 
-            // TODO: get user from req auth
-            final String username = req.queryParams("user");
-
+            final AuthUser authUser = JwtUtil.getAuthUser(req);
             final TransferDTO transfer = mapper.readValue(req.body(), TransferDTO.class);
-
-            accountService.transferMoney(username, transfer.toUser, transfer.units);
+            accountService.transferMoney(authUser.username, transfer.toUser, transfer.units);
 
             return mapper.writeValueAsString(new MessageDTO("ok"));
         });
