@@ -39,7 +39,7 @@ public class Application {
         addExceptionHandlers();
         setupEndpoints(mapper, accountService, userService);
 
-        createDummyData(accountService, userService); // TODO: remove
+        createSampleData(accountService, userService); // TODO: remove sample data
     }
 
     private static void setupEndpoints(
@@ -102,12 +102,14 @@ public class Application {
         res.body(message);
     }
 
-    private static void createDummyData(AccountService accountService, UserService userService) {
+    private static void createSampleData(AccountService accountService, UserService userService) {
         userService.create(new User("john", "john-password"));
         userService.create(new User("mary", "mary-password"));
         userService.create(new User("pepe", "pepe-password"));
-        accountService.create(new Account("john", new Amount(Currency.DOLLAR_CENTS, 10000)));
-        accountService.create(new Account("mary", new Amount(Currency.DOLLAR_CENTS, 20050)));
-        accountService.create(new Account("pepe", new Amount(Currency.EURO_CENTS, 3000)));
+        userService.create(new User("sara", "sara-password"));
+        accountService.create(new Account("john", new Amount(Currency.DOLLAR_CENTS, 100 * 100)));
+        accountService.create(new Account("mary", new Amount(Currency.DOLLAR_CENTS, 200 * 100)));
+        accountService.create(new Account("pepe", new Amount(Currency.EURO_CENTS, 300 * 100)));
+        accountService.create(new Account("sara", new Amount(Currency.EURO_CENTS, 400 * 100)));
     }
 }
