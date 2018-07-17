@@ -46,6 +46,18 @@ public class AccountServiceShould {
         accountService.findByUsername("some-user");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void fail_if_transferring_between_same_user() {
+
+        accountService.transferMoney("same", "same", 100);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void fail_if_units_are_not_positive() {
+
+        accountService.transferMoney("from", "to", 0);
+    }
+
     @Test(expected = AccountNotExistsException.class)
     public void fail_if_transferring_between_non_existing_accounts() {
 

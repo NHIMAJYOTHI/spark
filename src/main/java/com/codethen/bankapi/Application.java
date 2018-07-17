@@ -95,6 +95,10 @@ public class Application {
         exception(AuthenticationException.class, (ex, req, res) -> {
             setupResponse(res, HttpStatus.UNAUTHORIZED_401, "Unauthorized");
         });
+
+        exception(IllegalArgumentException.class, (ex, req, res) -> {
+            setupResponse(res, HttpStatus.PRECONDITION_FAILED_412, "Illegal argument");
+        });
     }
 
     private static void setupResponse(Response res, int status, String message) {

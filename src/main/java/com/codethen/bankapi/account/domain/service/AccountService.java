@@ -8,6 +8,8 @@ import com.codethen.bankapi.account.domain.model.Account;
 import com.codethen.bankapi.account.domain.model.Currency;
 import com.codethen.bankapi.account.domain.repository.AccountRepository;
 
+import java.util.Objects;
+
 public class AccountService {
 
     private final AccountRepository accountRepository;
@@ -40,11 +42,17 @@ public class AccountService {
 
     /**
      * Transfers money from one account to another.
+     *
+     * @throws IllegalArgumentException if both users are the same or units are not positive
      * @throws AccountNotExistsException if any of the given users doesn't have an account
      * @throws NotEnoughUnitsException if the source account doesn't have enough funds
      * @throws CurrenciesDontMatchException if accounts don't have the same {@link Currency}
      */
     public void transferMoney(String fromUser, String toUser, long units) {
+
+        if (Objects.equals(fromUser, toUser) || units <= 0) {
+            throw new IllegalArgumentException();
+        }
 
         final Account accountFrom = findByUsername(fromUser);
         final Account accountTo = findByUsername(toUser);
