@@ -37,11 +37,16 @@ public class JwtUtil {
             throw new AuthenticationException();
         }
 
-        final String jwt = authHeader.substring(AUTH_SCHEMA.length() + 1);
-        final Claims claims = JwtUtil.parseClaims(jwt);
-        final String username = claims.getSubject();
+        try {
+            final String jwt = authHeader.substring(AUTH_SCHEMA.length() + 1);
+            final Claims claims = JwtUtil.parseClaims(jwt);
+            final String username = claims.getSubject();
 
-        return new AuthUser(username);
+            return new AuthUser(username);
+
+        } catch (Exception e) {
+            throw new AuthenticationException();
+        }
     }
 
     public static Claims parseClaims(String jwt) {
