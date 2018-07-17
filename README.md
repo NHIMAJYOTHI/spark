@@ -4,6 +4,20 @@ Sample application of a simple bank account API.
 
 ## Usage
 
+### From IDE
+
+Run the `Application` class.
+
+### Docker
+
+For example: build an image, start a container and stop it when done. 
+
+```
+$ docker build -t bankapi .
+$ docker run -d -p 4567:4567 --name bankapi1 bankapi
+$ docker stop bankapi1  
+```
+   
 There are 4 sample users/accounts already created when you launch the app (see the `Application` class).
 
 First you need to login with some user to get a JWT token:
